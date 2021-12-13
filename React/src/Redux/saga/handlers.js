@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {call,put} from 'redux-saga/effects'
-import { GET_EMPLOYEES_SUCCESS, GET_SOFTLOCK_SUCCESS } from '../Actions/action'
+import { GET_EMPLOYEES_SUCCESS, GET_SOFTLOCK_SUCCESS, REQUEST_LOCK_SUCCESS } from '../Actions/action'
 
 export function* loginHandler(action){
     try{
@@ -49,5 +49,19 @@ export function* wfmManagerHandler(req){
   } 
   catch(e){
       yield put({type:"SOFTLOCK_FETCH_FAILURE"})
+  }
+}
+
+export function* requestLockHandler(req){
+  console.log("Update Softlock Requests")
+  try{
+    const uri = 'http://localhost:8000/employees/manager_request';
+    const result = yield call(axios.put, uri, {"employee_id": req.employee_id, "manager": req.manager, "message": req.message})
+    console.log(result.data)
+
+    yield put({type: REQUEST_LOCK_SUCCESS, data: result.data})
+  } 
+  catch(e){
+      yield put({type:"REQUEST_LOCK_FAILURE"})
   }
 }

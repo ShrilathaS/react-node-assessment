@@ -33,6 +33,10 @@
   color: #fff;
 }
 
+.text-theme {
+  color: rgb(101, 0, 168);
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

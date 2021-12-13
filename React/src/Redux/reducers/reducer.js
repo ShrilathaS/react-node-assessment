@@ -1,4 +1,4 @@
-import { GET_EMPLOYEES_SUCCESS, GET_SOFTLOCK_SUCCESS } from "../Actions/action";
+import { GET_EMPLOYEES_SUCCESS, GET_SOFTLOCK_SUCCESS, REQUEST_LOCK_SUCCESS } from "../Actions/action";
 
 export const loginReducer=(state={username:"NA",token:"NA",usertype:"NA",message:""},action)=>{
     switch(action.type){
@@ -31,9 +31,16 @@ export const wfmManagerReducer=(state={ softlocks: [] }, action)=>{
         case GET_SOFTLOCK_SUCCESS:
             console.log(action.data)
             return {...state, softlocks: action.data}
-        case "EMPLOYEE_FETCH_FAILURE":
-            console.log(action)
-            return {...state,message:"No Employees"}
+        default:
+            return state
+    }
+}
+
+export const requestReducer=(state={employee_id: "NA"}, action)=>{
+    switch(action.type){
+        case REQUEST_LOCK_SUCCESS:
+            console.log(action.data)
+            return {...state, message: action.data}
         default:
             return state
     }

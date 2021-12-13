@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSoftlockRequests } from "../Redux/Actions/action";
+import WfmManagerModal from "../Utils/WfmManagerModal";
 
 
 const WFMHome = () => {
@@ -9,6 +11,10 @@ debugger;
         return state.wfmManagerReducer.softlocks;
     })
     const wfm_manager = localStorage.getItem("username");
+    const [employee_id, setEmployeeID] = useState("NA")
+    const [requestee, setRequestee] = useState("NA")
+    const [emp_manager, setEmpManager] = useState(wfm_manager)
+    const [req_desc, setRequestDesc] = useState("NA")
     
     dispatch(getSoftlockRequests(wfm_manager))
     
@@ -34,11 +40,18 @@ debugger;
                             softlocks.map((softlock: any) => 
                                 <tr>
                                     <td>{softlock.employee_id}</td>
-                                    <td>{softlock.name}</td>
+                                    <td>{softlock.manager}</td>
                                     <td>{softlock.reqdate}</td>
                                     <td>{wfm_manager}</td>
                                     <td>
-                                        <button className="btn btn-primary">
+                                        <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateLock"
+                                            onClick={()=>{
+                                                setEmployeeID(softlock.employee_id);
+                                                setRequestee(softlock.manager);
+                                                setEmpManager(wfm_manager);
+                                                setRequestDesc(softlock.requestmessage)
+                                                }}>
+                                            <i className="bi-eye-fill"></i> &ensp;
                                             View Details
                                         </button>
                                     </td>
@@ -48,6 +61,7 @@ debugger;
                     </tbody>
                 </table>
             </div>
+            <WfmManagerModal employee_id={employee_id} requestee={requestee} emp_manager={emp_manager} req_desc={req_desc}></WfmManagerModal>
         </div> 
     )
         
